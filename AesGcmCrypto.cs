@@ -1,6 +1,4 @@
-// AesGcmCrypto.cs — AES-256-GCM encrypt/decrypt, wire-compatible with
-// core/crypto/aes.py:
-//   [4B magic 'SFRG'][16B Argon2 salt][12B GCM nonce][ciphertext][16B GCM tag]
+//[4B magic 'SFRG'][16B Argon2 salt][12B GCM nonce][ciphertext][16B GCM tag]
 using System.Security.Cryptography;
 using System.Text;
 

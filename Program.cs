@@ -47,15 +47,12 @@ class Program
         byte[] carrierBytes = File.ReadAllBytes(carrierPath);
         byte[] payloadBytes = File.ReadAllBytes(payloadPath);
 
-        byte[] embedBytes = string.IsNullOrEmpty(key)
-            ? payloadBytes
-            : AesGcmCrypto.Encrypt(payloadBytes, key);
+        byte[] embedBytes = string.IsNullOrEmpty(key) ? payloadBytes : AesGcmCrypto.Encrypt(payloadBytes, key);
 
         int cap = LsbCodec.Capacity(carrierBytes, depth);
         if (embedBytes.Length > cap)
         {
-            Console.Error.WriteLine(
-                $"Encrypted payload too large: {embedBytes.Length} bytes, capacity at depth={depth}: {cap} bytes.");
+            Console.Error.WriteLine($"Encrypted payload too large: {embedBytes.Length} bytes, capacity at depth={depth}: {cap} bytes.");
             return 1;
         }
 
@@ -66,7 +63,6 @@ class Program
         return 0;
     }
 
-    // decode <stego.png> <key> <output.bin> [depth]
     static int CmdDecode(string[] args)
     {
         if (args.Length < 4)
@@ -82,10 +78,7 @@ class Program
 
         byte[] stegoBytes = File.ReadAllBytes(stegoPath);
         byte[] rawBytes = LsbCodec.Decode(stegoBytes, depth, key);
-
-        byte[] payloadBytes = string.IsNullOrEmpty(key)
-            ? rawBytes
-            : AesGcmCrypto.Decrypt(rawBytes, key);
+        byte[] payloadBytes = string.IsNullOrEmpty(key) ? rawBytes : AesGcmCrypto.Decrypt(rawBytes, key);
 
         File.WriteAllBytes(outputPath, payloadBytes);
         Console.WriteLine($"OK: {payloadBytes.Length} bytes extracted -> {outputPath}");
@@ -94,7 +87,7 @@ class Program
 
     static void PrintUsage()
     {
-        Console.WriteLine("StegoForgeNet — minimal LSB image steganography (StegoForge-compatible)");
+        Console.WriteLine("minimal LSB image steganography");
         Console.WriteLine();
         Console.WriteLine("  encode <carrier.png> <payload.bin> <key> <output.png> [depth=1]");
         Console.WriteLine("  decode <stego.png> <key> <output.bin> [depth=1]");
